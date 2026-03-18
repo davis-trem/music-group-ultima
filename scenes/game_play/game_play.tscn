@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://cx4limbrle82y"]
+
+[ext_resource type="Script" uid="uid://bg6yegadg8j0a" path="res://scenes/game_play/game_play.gd" id="1_xuoj1"]
+[ext_resource type="PackedScene" uid="uid://cuyd1qv0pn26e" path="res://addons/midi/MidiPlayer.tscn" id="2_gti0f"]
+[ext_resource type="PackedScene" uid="uid://ojeupgtdolmu" path="res://scenes/play_bar/play_bar.tscn" id="3_quq33"]
+
+[sub_resource type="Environment" id="Environment_6it1n"]
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+fog_mode = 1
+fog_light_color = Color(0.214139, 0.235722, 0.269651, 1)
+fog_sun_scatter = 0.35
+fog_density = 0.985
+
+[node name="GamePlay" type="Node3D"]
+script = ExtResource("1_xuoj1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.861629, 0.507538, 0, -0.507538, 0.861629, 0, 3.885, 6.53)
+environment = SubResource("Environment_6it1n")
+
+[node name="MidiPlayer" parent="." instance=ExtResource("2_gti0f")]
+file = "res://midis/d_ML_11685.mid"
+soundfont = "res://sound_fonts/Aspirin-Stereo.sf2"
+
+[node name="PlayBar" parent="." instance=ExtResource("3_quq33")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="StateLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Press [SPACE] to start"
+
+[connection signal="midi_event" from="MidiPlayer" to="." method="_on_midi_player_midi_event"]

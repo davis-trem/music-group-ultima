@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://t75pqemujksf"]
+
+[ext_resource type="Script" uid="uid://5su4vxuqca05" path="res://scenes/note/note.gd" id="1_wbc10"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7buut"]
+resource_local_to_scene = true
+radius = 0.3
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3yvt"]
+resource_local_to_scene = true
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wbc10"]
+radius = 0.3
+height = 0.6
+
+[sub_resource type="Curve" id="Curve_wbc10"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.08333, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cge7e"]
+curve = SubResource("Curve_wbc10")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_505v3"]
+particle_flag_align_y = true
+spread = 180.0
+flatness = 0.4
+initial_velocity_max = 10.0
+gravity = Vector3(0, 3, 0)
+scale_min = 0.2
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_cge7e")
+color = Color(0.587841, 1, 0.995943, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uun5c"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k2mhf"]
+material = SubResource("StandardMaterial3D_uun5c")
+top_radius = 0.0
+bottom_radius = 0.2
+
+[node name="Note" type="Node3D"]
+script = ExtResource("1_wbc10")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_7buut")
+surface_material_override/0 = SubResource("StandardMaterial3D_t3yvt")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_wbc10")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.284607, 0)
+emitting = false
+amount = 20
+lifetime = 0.25
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_505v3")
+draw_pass_1 = SubResource("CylinderMesh_k2mhf")
+
+[connection signal="finished" from="GPUParticles3D" to="." method="_on_gpu_particles_3d_finished"]

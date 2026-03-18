@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://ojeupgtdolmu"]
+
+[ext_resource type="PackedScene" uid="uid://dig1wxl7poc4l" path="res://scenes/fret_button/fret_button.tscn" id="1_6fyds"]
+
+[node name="PlayBar" type="Node3D"]
+
+[node name="FretButton1" parent="." instance=ExtResource("1_6fyds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.086, 0, 0)
+button_color = Color(1, 0, 0, 1)
+
+[node name="FretButton2" parent="." instance=ExtResource("1_6fyds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.362, 0, 0)
+lane_index = 1
+button_color = Color(1, 1, 0, 1)
+
+[node name="FretButton3" parent="." instance=ExtResource("1_6fyds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.362, 0, 0)
+lane_index = 2
+button_color = Color(0, 1, 0, 1)
+
+[node name="FretButton4" parent="." instance=ExtResource("1_6fyds")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.086, 0, 0)
+lane_index = 3
+button_color = Color(0, 0, 1, 1)

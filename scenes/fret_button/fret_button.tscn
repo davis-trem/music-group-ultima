@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dig1wxl7poc4l"]
+
+[ext_resource type="Script" uid="uid://bbdefm8btbukr" path="res://scenes/fret_button/fret_button.gd" id="1_0jlll"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oj8ot"]
+size = Vector3(0.725, 0.2, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i375l"]
+size = Vector3(0.675, 0.25, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0jlll"]
+resource_local_to_scene = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8ra5u"]
+size = Vector3(0.725, 0.5, 1.5)
+
+[node name="FretButton" type="Node3D"]
+script = ExtResource("1_0jlll")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("BoxMesh_oj8ot")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("BoxMesh_i375l")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_0jlll")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+shape = SubResource("BoxShape3D_8ra5u")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
