@@ -19,6 +19,10 @@ run/main_scene="uid://gdss037s7wek"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+general/default_playback_type.web=0
+
 [autoload]
 
 GameStats="*res://utilities/game_stats.gd"
