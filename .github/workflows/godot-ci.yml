@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 env:
-  GODOT_MAJOR_MINOR_VERSION: "4.4" # must be a string, not a number
+  GODOT_MAJOR_MINOR_VERSION: "4.6" # must be a string, not a number
   GODOT_PATCH_VERSION: "stable"
 
   PROJECT_FOLDER: "." # the path to the godot project (must contain `project.godot` file) relative to the github root path
