@@ -216,6 +216,10 @@ func read_file( path:String ) -> SoundFontParseResult:
 	var result: = SoundFontParseResult.new( )
 
 	var f: = FileAccess.open( path, FileAccess.READ )
+	if f == null:
+		var error_code = FileAccess.get_open_error()
+		result.error = error_code
+		return result
 	if f.get_error( ) != OK:
 		result.error = f.get_error( )
 		return result
