@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://t75pqemujksf"]
+[gd_scene format=3 uid="uid://t75pqemujksf"]
 
 [ext_resource type="Script" uid="uid://5su4vxuqca05" path="res://scenes/note/note.gd" id="1_wbc10"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_7buut"]
 resource_local_to_scene = true
-radius = 0.3
+radius = 0.15
 height = 0.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3yvt"]
@@ -12,7 +12,7 @@ resource_local_to_scene = true
 albedo_color = Color(0, 1, 0, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wbc10"]
-radius = 0.3
+radius = 0.15
 height = 0.6
 
 [sub_resource type="Curve" id="Curve_wbc10"]
@@ -41,22 +41,21 @@ material = SubResource("StandardMaterial3D_uun5c")
 top_radius = 0.0
 bottom_radius = 0.2
 
-[node name="Note" type="Node3D"]
+[node name="Note" type="Node3D" unique_id=783304964]
 script = ExtResource("1_wbc10")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=810386344]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_7buut")
 surface_material_override/0 = SubResource("StandardMaterial3D_t3yvt")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=339250668]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1509810668]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_wbc10")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.284607, 0)
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=2111886509]
 emitting = false
 amount = 20
 lifetime = 0.25
