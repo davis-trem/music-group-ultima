@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dig1wxl7poc4l"]
+[gd_scene format=3 uid="uid://dig1wxl7poc4l"]
 
 [ext_resource type="Script" uid="uid://bbdefm8btbukr" path="res://scenes/fret_button/fret_button.gd" id="1_0jlll"]
 
@@ -12,26 +12,25 @@ size = Vector3(0.675, 0.25, 0.25)
 resource_local_to_scene = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8ra5u"]
-size = Vector3(0.725, 0.5, 1.5)
+size = Vector3(0.725, 0.5, 0.55)
 
-[node name="FretButton" type="Node3D"]
+[node name="FretButton" type="Node3D" unique_id=1200362329]
 script = ExtResource("1_0jlll")
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Model" type="Node3D" parent="." unique_id=1238067705]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Model"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Model" unique_id=1871373935]
 mesh = SubResource("BoxMesh_oj8ot")
 skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Model" unique_id=980757415]
 mesh = SubResource("BoxMesh_i375l")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_0jlll")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=1760443258]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=682308911]
 shape = SubResource("BoxShape3D_8ra5u")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

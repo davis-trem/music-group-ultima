@@ -2,13 +2,10 @@ extends Node3D
 
 const NOTE = preload('res://scenes/note/note.tscn')
 
+@onready var goal_area_3d: Area3D = $GoalArea3D
+
 var midi_player: MidiPlayer
 var instrument_code: int
-
-const beats_til_goal := 6.0
-const distance_total_to_goal := 9.0
-
-var meters_per_beat := distance_total_to_goal / beats_til_goal
 
 var notes := []
 var spawned_noted := []
@@ -18,20 +15,19 @@ var lanes := [-1.05, -0.35, 0.35, 1.05]
 var channel_number := -1
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if midi_player.playing:
-		var meters_per_tick := meters_per_beat / midi_player.smf_data.timebase
-		
 		for note in notes:
 			if not note['visited'] and midi_player.position + (midi_player.smf_data.timebase * 5) >= note['tick']:
 				note['visited'] = true
 				var n = NOTE.instantiate()
 				n.player = instrument_code # TODO: create player to associate w/ instrument
 				n.midi_player = midi_player
-				n.distance_total_to_goal = distance_total_to_goal
 				n.tick = note['tick']
 				n.lane_index = note['lane']
-				n.position = Vector3(lanes[note['lane']], 0.03, -100)
+				n.spawned_tick = midi_player.position
+				n.start_pos = Vector3(lanes[note['lane']], 0.03, -5)
+				n.goal_pos = Vector3(lanes[note['lane']], 0.03, goal_area_3d.position.z)
 				add_child(n)
 				#if note['duration'] != midi_player.smf_data.timebase:
 					#n.set_size(float(note['duration']) / float(midi_player.smf_data.timebase))
@@ -73,7 +69,6 @@ func process_notes() -> Array[Dictionary]:
 						temp_notes[index]['max_note'] = max_note
 						temp_notes[index]['lane'] = map_note_to_lane(
 							temp_notes[index]['note'],
-							temp_notes[index]['tick'],
 							min_note,
 							max_note
 						)
@@ -95,7 +90,6 @@ func process_notes() -> Array[Dictionary]:
 		temp_notes[index]['max_note'] = max_note
 		temp_notes[index]['lane'] = map_note_to_lane(
 			temp_notes[index]['note'],
-			temp_notes[index]['tick'],
 			min_note,
 			max_note
 		)
@@ -126,7 +120,6 @@ func process_notes() -> Array[Dictionary]:
 				new_note['note'] = floor((chord[1]['note'] + chord[2]['note']) / 2)
 				new_note['lane'] = map_note_to_lane(
 					new_note['note'],
-					new_note['tick'],
 					new_note['min_note'],
 					new_note['max_note']
 				)
@@ -136,7 +129,6 @@ func process_notes() -> Array[Dictionary]:
 				new_note['note'] = floor((chord[0]['note'] + chord[1]['note']) / 2)
 				new_note['lane'] = map_note_to_lane(
 					new_note['note'],
-					new_note['tick'],
 					new_note['min_note'],
 					new_note['max_note']
 				)
@@ -148,7 +140,6 @@ func process_notes() -> Array[Dictionary]:
 				)
 				new_note['lane'] = map_note_to_lane(
 					new_note['note'],
-					new_note['tick'],
 					new_note['min_note'],
 					new_note['max_note']
 				)
@@ -163,7 +154,7 @@ func process_notes() -> Array[Dictionary]:
 	return notes_w_limited_chord
 
 
-func map_note_to_lane(note: int, tick: int, min_note: int, max_note: int):
+func map_note_to_lane(note: int, min_note: int, max_note: int):
 	var pitch_range: = max_note - min_note
 	if pitch_range <= 0:
 		return 0  # fallback if all notes are same pitch
@@ -174,29 +165,6 @@ func map_note_to_lane(note: int, tick: int, min_note: int, max_note: int):
 	# Clamp in case of edge rounding
 	lane_index = clamp(lane_index, 0, lanes.size() - 1)
 	return lane_index
-
-
-func _on_midi_player_midi_event(
-	channel: MidiPlayer.GodotMIDIPlayerChannelStatus,
-	event: SMF.MIDIEvent
-) -> void:
-	#if event.type == SMF.MIDIEventType.note_on:
-		#prints( int( ceil( midi_player.position ) ))
-		#prints(
-			#channel.track_name,
-			#channel.note_on,
-			#channel.instrument_name,
-			#event.type,
-			#channel.program,
-			#event.note,
-			#midi_player.position,
-			#int( ceil( midi_player.position ) )
-		#)
-		#
-		#for c in midi_player.channel_status:
-			#prints(c.instrument_name, c.program, instruments[c.program + 1])
-	#prints(channel.instrument_name, channel.track_name, event.type)
-	pass # Replace with function body.
 
 
 func _on_goal_area_3d_area_exited(area: Area3D) -> void:

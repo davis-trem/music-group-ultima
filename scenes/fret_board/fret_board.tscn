@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnba5j4t3nqb6"]
+[gd_scene format=3 uid="uid://cnba5j4t3nqb6"]
 
 [ext_resource type="Script" uid="uid://1g0gcodui04p" path="res://scenes/fret_board/fret_board.gd" id="1_hod3d"]
 
@@ -24,57 +24,57 @@ albedo_color = Color(0.259294, 0.259294, 0.259294, 1)
 size = Vector3(2.9, 0.11, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hod3d"]
-size = Vector3(2.9, 0.5, 1)
+size = Vector3(2.9, 0.5, 0.55)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ei6q2"]
 size = Vector3(2.9, 0.5, 0.1)
 
-[node name="FretBoard" type="Node3D"]
+[node name="FretBoard" type="Node3D" unique_id=71083094]
 script = ExtResource("1_hod3d")
 
-[node name="Board" type="MeshInstance3D" parent="."]
+[node name="Board" type="MeshInstance3D" parent="." unique_id=26413282]
 mesh = SubResource("BoxMesh_kdcex")
 surface_material_override/0 = SubResource("StandardMaterial3D_walnb")
 
-[node name="Lane1" type="MeshInstance3D" parent="."]
+[node name="Lane1" type="MeshInstance3D" parent="." unique_id=496192185]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.725, 0.038, 0)
 mesh = SubResource("BoxMesh_eokb3")
 surface_material_override/0 = SubResource("StandardMaterial3D_pxhuq")
 
-[node name="Lane2" type="MeshInstance3D" parent="."]
+[node name="Lane2" type="MeshInstance3D" parent="." unique_id=199087381]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0383945, 0)
 mesh = SubResource("BoxMesh_eokb3")
 surface_material_override/0 = SubResource("StandardMaterial3D_pxhuq")
 
-[node name="Lane3" type="MeshInstance3D" parent="."]
+[node name="Lane3" type="MeshInstance3D" parent="." unique_id=1086344143]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.038, 0)
 mesh = SubResource("BoxMesh_eokb3")
 surface_material_override/0 = SubResource("StandardMaterial3D_pxhuq")
 
-[node name="Border1" type="MeshInstance3D" parent="."]
+[node name="Border1" type="MeshInstance3D" parent="." unique_id=484372104]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0.03, 0)
 mesh = SubResource("BoxMesh_5fhc1")
 surface_material_override/0 = SubResource("StandardMaterial3D_vgs0l")
 
-[node name="Border2" type="MeshInstance3D" parent="."]
+[node name="Border2" type="MeshInstance3D" parent="." unique_id=658998510]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.03, 0)
 mesh = SubResource("BoxMesh_5fhc1")
 surface_material_override/0 = SubResource("StandardMaterial3D_vgs0l")
 
-[node name="Goal" type="MeshInstance3D" parent="."]
+[node name="Goal" type="MeshInstance3D" parent="." unique_id=2080210253]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 mesh = SubResource("BoxMesh_walnb")
 
-[node name="GoalArea3D" type="Area3D" parent="."]
+[node name="GoalArea3D" type="Area3D" parent="." unique_id=276894808]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GoalArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GoalArea3D" unique_id=1255634012]
 shape = SubResource("BoxShape3D_hod3d")
 
-[node name="ExitArea3D" type="Area3D" parent="."]
+[node name="ExitArea3D" type="Area3D" parent="." unique_id=1106301771]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.95)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitArea3D" unique_id=2031521458]
 shape = SubResource("BoxShape3D_ei6q2")
 
 [connection signal="area_exited" from="GoalArea3D" to="." method="_on_goal_area_3d_area_exited"]

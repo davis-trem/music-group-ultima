@@ -8,8 +8,10 @@ class_name Note
 
 var player: int
 var midi_player: MidiPlayer
-var distance_total_to_goal: float
 var lane_index: int
+var spawned_tick: int
+var start_pos: Vector3
+var goal_pos: Vector3
 var tick := 0
 
 var note_played := false: set = _set_note_played
@@ -17,14 +19,19 @@ var note_played := false: set = _set_note_played
 func _ready() -> void:
 	var color = ColorsUtil.LANE_COLORS[lane_index]
 	set_color(color)
+	position = start_pos
 	
 
-
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if midi_player.playing and not note_played:
-		position.z = (
-			(midi_player.position - tick) / midi_player.smf_data.timebase * distance_total_to_goal
-		) - meshInstance.mesh.height
+		var direction = goal_pos.z - start_pos.z
+		var duration = tick - spawned_tick
+
+		var velocity_per_tick = direction / duration
+
+		var offset_ticks = midi_player.position - tick
+
+		position.z = goal_pos.z + velocity_per_tick * offset_ticks
 
 
 func set_size(value: float) -> void:
