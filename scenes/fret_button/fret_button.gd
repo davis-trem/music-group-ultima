@@ -15,6 +15,7 @@ func  _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	var action := 'fret_button_{0}'.format([lane_index + 1])
+	var material: StandardMaterial3D = mesh_instance_3d_2.get_active_material(0)
 	if event.is_action_pressed(action):
 		var tween := create_tween()
 		tween.tween_property(
@@ -24,9 +25,28 @@ func _input(event: InputEvent) -> void:
 			0.1
 		)
 		
+		# Played note
 		if note_in_range and not note_in_range.note_played:
+			var dist_from_goal := global_position.z - note_in_range.global_position.z
+			var points := 1.0
+			if dist_from_goal > 0.2:
+				note_in_range.play_attempt = Note.PlayAttempt.Early
+				points = 0.7
+			elif dist_from_goal < -0.2:
+				note_in_range.play_attempt = Note.PlayAttempt.Late
+				points = 0.7
+			else:
+				note_in_range.play_attempt = Note.PlayAttempt.Perfect
+			
 			note_in_range.note_played = true
-			GameStats.update_player_rating(note_in_range.player, 1)
+			GameStats.update_player_rating(note_in_range.player, points)
+		else:
+			tween.tween_property(
+				material,
+				'albedo_color',
+				Color.DARK_RED,
+				0.1
+			)
 		
 	if event.is_action_released(action):
 		var tween := create_tween()
@@ -36,6 +56,14 @@ func _input(event: InputEvent) -> void:
 			Vector3(model.position.x, 0, model.position.z),
 			0.1
 		)
+		if material.albedo_color != button_color:
+			tween.tween_property(
+				material,
+				'albedo_color',
+				button_color,
+				0.1
+			)
+			GameStats.update_player_rating(note_in_range.player, -1.0)
 
 
 func _on_area_3d_area_entered(area: Area3D) -> void:

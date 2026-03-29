@@ -64,4 +64,9 @@ explosiveness = 0.9
 process_material = SubResource("ParticleProcessMaterial_505v3")
 draw_pass_1 = SubResource("CylinderMesh_k2mhf")
 
+[node name="PlayAttemptLabel3D" type="Label3D" parent="." unique_id=1344735139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26450944, 0)
+visible = false
+text = "Early"
+
 [connection signal="finished" from="GPUParticles3D" to="." method="_on_gpu_particles_3d_finished"]

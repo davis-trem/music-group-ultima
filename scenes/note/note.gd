@@ -5,6 +5,9 @@ class_name Note
 @onready var meshInstance: MeshInstance3D = $Mesh
 @onready var collision_shape_3d: CollisionShape3D = $Area3D/CollisionShape3D
 @onready var gpu_particles_3d: GPUParticles3D = $GPUParticles3D
+@onready var play_attempt_label_3d: Label3D = $PlayAttemptLabel3D
+
+enum PlayAttempt { Early, Perfect, Late } 
 
 var player: int
 var midi_player: MidiPlayer
@@ -12,6 +15,7 @@ var lane_index: int
 var spawned_tick: int
 var start_pos: Vector3
 var goal_pos: Vector3
+var play_attempt: PlayAttempt
 var tick := 0
 
 var note_played := false: set = _set_note_played
@@ -46,6 +50,8 @@ func _set_note_played(value: bool) -> void:
 	note_played = value
 	if value == true:
 		meshInstance.hide()
+		play_attempt_label_3d.text = PlayAttempt.find_key(play_attempt)
+		play_attempt_label_3d.show()
 		gpu_particles_3d.emitting = true
 
 
