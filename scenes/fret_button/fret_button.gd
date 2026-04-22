@@ -7,13 +7,22 @@ extends Node3D
 @export_color_no_alpha var button_color: Color
 
 var note_in_range: Note
+var button_is_disabled := false: set = _set_button_is_disabled
 
 func  _ready() -> void:
 	var material: StandardMaterial3D = mesh_instance_3d_2.get_active_material(0)
 	material.albedo_color = button_color
 
 
+func _set_button_is_disabled(value: bool) -> void:
+	button_is_disabled = value
+	var material: StandardMaterial3D = mesh_instance_3d_2.get_active_material(0)
+	material.albedo_color = Color.DARK_GRAY if button_is_disabled else button_color
+
+
 func _input(event: InputEvent) -> void:
+	if button_is_disabled:
+		return
 	var action := 'fret_button_{0}'.format([lane_index + 1])
 	var material: StandardMaterial3D = mesh_instance_3d_2.get_active_material(0)
 	if event.is_action_pressed(action):
@@ -39,7 +48,7 @@ func _input(event: InputEvent) -> void:
 				note_in_range.play_attempt = Note.PlayAttempt.Perfect
 			
 			note_in_range.note_played = true
-			GameStats.update_player_rating(note_in_range.player, points)
+			GameStats.update_player_rating(note_in_range.character, points)
 		else:
 			tween.tween_property(
 				material,
@@ -63,7 +72,8 @@ func _input(event: InputEvent) -> void:
 				button_color,
 				0.1
 			)
-			GameStats.update_player_rating(note_in_range.player, -1.0)
+			if note_in_range:
+				GameStats.update_player_rating(note_in_range.character, -1.0)
 
 
 func _on_area_3d_area_entered(area: Area3D) -> void:

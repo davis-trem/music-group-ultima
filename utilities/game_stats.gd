@@ -8,6 +8,6 @@ func reset_ratings(instrument_codes: Array[int]) -> void:
 	for code in instrument_codes:
 		players_rating[code] = 100
 
-func update_player_rating(player: int, change: float) -> void:
-	players_rating[player] += change
+func update_player_rating(_character: Dictionary, change: float) -> void:
+	#players_rating[character] += change
 	crowd_favor += change / players_rating.size()

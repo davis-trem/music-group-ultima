@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cilh5n8c0v3ho"]
+
+[ext_resource type="Script" uid="uid://cpreqwwwxojs4" path="res://scenes/midi_select_row/midi_select_row.gd" id="1_c1ahb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mupmx"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="MidiSelectRow" type="PanelContainer" unique_id=180490828]
+offset_right = 510.0
+offset_bottom = 88.0
+script = ExtResource("1_c1ahb")
+
+[node name="Button" type="Button" parent="." unique_id=1402496130]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mupmx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=345081482]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=975912650]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "teeeest efvnkfvevjkdfv"
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer" unique_id=30339628]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="InstrumentList" type="HBoxContainer" parent="HBoxContainer/ScrollContainer" unique_id=569184880]
+layout_mode = 2
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

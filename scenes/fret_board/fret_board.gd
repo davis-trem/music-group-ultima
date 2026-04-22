@@ -4,8 +4,9 @@ const NOTE = preload('res://scenes/note/note.tscn')
 
 @onready var goal_area_3d: Area3D = $GoalArea3D
 
-var midi_player: MidiPlayer
-var instrument_code: int
+@export var midi_player: MidiPlayer
+@export var instrument_code: int
+@export var character: Dictionary
 
 var notes := []
 var spawned_noted := []
@@ -13,6 +14,12 @@ var spawned_noted := []
 var lanes := [-1.05, -0.35, 0.35, 1.05]
 
 var channel_number := -1
+var board_is_disabled := false
+
+
+func _ready() -> void:
+	if character.is_empty():
+		board_is_disabled = true
 
 
 func _process(_delta: float) -> void:
@@ -21,7 +28,7 @@ func _process(_delta: float) -> void:
 			if not note['visited'] and midi_player.position + (midi_player.smf_data.timebase * 5) >= note['tick']:
 				note['visited'] = true
 				var n = NOTE.instantiate()
-				n.player = instrument_code # TODO: create player to associate w/ instrument
+				n.character = character
 				n.midi_player = midi_player
 				n.tick = note['tick']
 				n.lane_index = note['lane']
@@ -171,7 +178,7 @@ func _on_goal_area_3d_area_exited(area: Area3D) -> void:
 	var parent = area.get_parent_node_3d()
 	if is_instance_of(parent, Note) and not parent.note_played:
 		(parent as Note).set_color(Color.DARK_RED)
-		GameStats.update_player_rating((parent as Note).player, -1)
+		GameStats.update_player_rating((parent as Note).character, -1)
 		#print('FAIL', (parent as Note).lane_index)
 
 

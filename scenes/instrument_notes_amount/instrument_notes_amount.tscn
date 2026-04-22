@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://d1ewcxxw37u5n"]
+
+[ext_resource type="Texture2D" uid="uid://dj2wthjlgp2x7" path="res://assets/radial.png" id="1_332lm"]
+[ext_resource type="Texture2D" uid="uid://dbhdqq6lc1kxi" path="res://assets/cirlce.png" id="1_ewlbl"]
+[ext_resource type="Script" uid="uid://b32gbfiipxq0a" path="res://scenes/instrument_notes_amount/instrument_notes_amount.gd" id="2_ewlbl"]
+[ext_resource type="Texture2D" uid="uid://70okxcfg8w13" path="res://icons/brass.png" id="2_s5fpb"]
+[ext_resource type="Shader" uid="uid://cnlfiida5l5x3" path="res://scenes/instrument_notes_amount/instrument_notes_amount.gdshader" id="4_03hrn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d40am"]
+shader = ExtResource("4_03hrn")
+
+[node name="InstrumentNotesAmount" type="TextureProgressBar" unique_id=740424344]
+offset_right = 50.0
+offset_bottom = 50.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+value = 95.0
+fill_mode = 4
+radial_initial_angle = 180.0
+texture_under = ExtResource("1_ewlbl")
+texture_progress = ExtResource("1_332lm")
+tint_under = Color(0.5921569, 0.44705883, 0, 0.21176471)
+tint_progress = Color(0.82283205, 0.8030131, 0.43612528, 1)
+script = ExtResource("2_ewlbl")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1985055619]
+material = SubResource("ShaderMaterial_d40am")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_s5fpb")
+expand_mode = 3
+stretch_mode = 4

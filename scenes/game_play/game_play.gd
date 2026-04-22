@@ -8,8 +8,8 @@ var MIDI_SELECT_MENU = load('res://views/midi_select_menu/midi_select_menu.tscn'
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var state_label: Label = $StateLabel
 
-var midi_file: String
-var instrument_codes: Array[int]
+@export var instrument_character_selection: Dictionary[int, Dictionary]
+@export var midi_file: String
 
 var selected_board_index := 0
 var boards := []
@@ -22,12 +22,14 @@ func _ready() -> void:
 	for ch in midi_player.channel_status:
 		channel_volumes[ch.number] = ch.volume
 	
+	var instrument_codes: Array[int] = instrument_character_selection.keys() as Array[int]
 	GameStats.reset_ratings(instrument_codes)
 	
 	for code in instrument_codes:
 		var board = FRET_BOARD.instantiate()
 		board.instrument_code = code
 		board.midi_player = midi_player
+		board.character = instrument_character_selection[code]
 		
 		if boards.size() > 0:
 			board.position = Vector3(
@@ -38,10 +40,17 @@ func _ready() -> void:
 		boards.push_back(board)
 		board.process_notes()
 		add_child(board)
+	
+	_update_play_bar_status()
 
 
 func _process(_delta: float) -> void:
 	progress_bar.value = GameStats.crowd_favor
+
+
+func _update_play_bar_status() -> void:
+	for fret_button in get_tree().get_nodes_in_group('fret_buttons'):
+		fret_button.button_is_disabled = boards[selected_board_index].board_is_disabled
 
 
 func _input(event: InputEvent) -> void:
@@ -65,6 +74,8 @@ func _input(event: InputEvent) -> void:
 			)
 		#tween.tween_callback(tween.queue_free)
 		tween.play()
+		
+		_update_play_bar_status()
 		
 		for ch in midi_player.channel_status:
 			if ch.number == boards[selected_board_index].channel_number:

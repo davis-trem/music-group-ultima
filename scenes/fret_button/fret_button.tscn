@@ -14,7 +14,7 @@ resource_local_to_scene = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_8ra5u"]
 size = Vector3(0.725, 0.5, 0.55)
 
-[node name="FretButton" type="Node3D" unique_id=1200362329]
+[node name="FretButton" type="Node3D" unique_id=1200362329 groups=["fret_buttons"]]
 script = ExtResource("1_0jlll")
 
 [node name="Model" type="Node3D" parent="." unique_id=1238067705]
