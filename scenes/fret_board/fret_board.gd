@@ -3,6 +3,7 @@ extends Node3D
 const NOTE = preload('res://scenes/note/note.tscn')
 
 @onready var goal_area_3d: Area3D = $GoalArea3D
+@onready var instrument_icon: Sprite3D = $InstrumentIcon
 
 @export var midi_player: MidiPlayer
 @export var instrument_code: int
@@ -18,6 +19,9 @@ var board_is_disabled := false
 
 
 func _ready() -> void:
+	var instrument_type = Intruments.instruments[instrument_code]['type']
+	var icon := load(Intruments.instrument_icons[instrument_type])
+	instrument_icon.texture = icon
 	if character.is_empty():
 		board_is_disabled = true
 
