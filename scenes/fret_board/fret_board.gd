@@ -4,10 +4,12 @@ const NOTE = preload('res://scenes/note/note.tscn')
 
 @onready var goal_area_3d: Area3D = $GoalArea3D
 @onready var instrument_icon: Sprite3D = $InstrumentIcon
+@onready var character_icon: Sprite3D = $CharacterIcon
 
 @export var midi_player: MidiPlayer
 @export var instrument_code: int
-@export var character: Dictionary
+@export var character: Character
+@export var playing_position_index: int
 
 var notes := []
 var spawned_noted := []
@@ -19,11 +21,15 @@ var board_is_disabled := false
 
 
 func _ready() -> void:
-	var instrument_type = Intruments.instruments[instrument_code]['type']
-	var icon := load(Intruments.instrument_icons[instrument_type])
+	var instrument_type = Instruments.instruments[instrument_code]['type']
+	var icon := load(Instruments.instrument_icons[instrument_type])
 	instrument_icon.texture = icon
-	if character.is_empty():
+	if character == null:
 		board_is_disabled = true
+	else:
+		var c_icon := load(character.sprite)
+		character_icon.texture = c_icon
+		character_icon.modulate = character.modulate_color
 
 
 func _process(_delta: float) -> void:
@@ -34,14 +40,13 @@ func _process(_delta: float) -> void:
 				var n = NOTE.instantiate()
 				n.character = character
 				n.midi_player = midi_player
+				n.playing_position_index = playing_position_index
 				n.tick = note['tick']
 				n.lane_index = note['lane']
 				n.spawned_tick = midi_player.position
 				n.start_pos = Vector3(lanes[note['lane']], 0.03, -5)
 				n.goal_pos = Vector3(lanes[note['lane']], 0.03, goal_area_3d.position.z)
 				add_child(n)
-				#if note['duration'] != midi_player.smf_data.timebase:
-					#n.set_size(float(note['duration']) / float(midi_player.smf_data.timebase))
 
 				spawned_noted.push_back(n)
 
@@ -182,7 +187,7 @@ func _on_goal_area_3d_area_exited(area: Area3D) -> void:
 	var parent = area.get_parent_node_3d()
 	if is_instance_of(parent, Note) and not parent.note_played:
 		(parent as Note).set_color(Color.DARK_RED)
-		GameStats.update_player_rating((parent as Note).character, -1)
+		GameStats.update_position_rating(playing_position_index, -1)
 		#print('FAIL', (parent as Note).lane_index)
 
 

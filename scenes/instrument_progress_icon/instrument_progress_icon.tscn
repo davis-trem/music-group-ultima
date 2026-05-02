@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bibqfw0iu5i80"]
+
+[ext_resource type="Script" uid="uid://di4es4a75s15j" path="res://scenes/instrument_progress_icon/instrument_progress_icon.gd" id="1_wi61b"]
+
+[node name="InstrumentProgressIcon" type="Control" unique_id=837873482]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_wi61b")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1809068088]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=579829109]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+expand_mode = 2
+stretch_mode = 4

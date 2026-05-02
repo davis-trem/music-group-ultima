@@ -48,7 +48,7 @@ func _input(event: InputEvent) -> void:
 				note_in_range.play_attempt = Note.PlayAttempt.Perfect
 			
 			note_in_range.note_played = true
-			GameStats.update_player_rating(note_in_range.character, points)
+			GameStats.update_position_rating(note_in_range.playing_position_index, points)
 		else:
 			tween.tween_property(
 				material,
@@ -73,7 +73,10 @@ func _input(event: InputEvent) -> void:
 				0.1
 			)
 			if note_in_range:
-				GameStats.update_player_rating(note_in_range.character, -1.0)
+				GameStats.update_position_rating(
+					note_in_range.playing_position_index,
+					-0.1 if note_in_range.character == null else -1.0
+				)
 
 
 func _on_area_3d_area_entered(area: Area3D) -> void:

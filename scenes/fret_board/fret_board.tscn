@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://cnba5j4t3nqb6"]
 
 [ext_resource type="Script" uid="uid://1g0gcodui04p" path="res://scenes/fret_board/fret_board.gd" id="1_hod3d"]
+[ext_resource type="Texture2D" uid="uid://c12eoscx83526" path="res://sprites/no_sign.png" id="2_ei6q2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ei6q2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtqbe"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_kdcex"]
 size = Vector3(3.5, 0.1, 10)
@@ -35,8 +38,13 @@ size = Vector3(2.9, 0.5, 0.1)
 script = ExtResource("1_hod3d")
 
 [node name="InstrumentIcon" type="Sprite3D" parent="." unique_id=1034234632]
-transform = Transform3D(0.1, 0, 0, 0, -4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, 0, 0.064, 4.405)
+transform = Transform3D(0.1, 0, 0, 0, -4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, -0.27, 0.064, 4.405)
 material_overlay = SubResource("StandardMaterial3D_ei6q2")
+
+[node name="CharacterIcon" type="Sprite3D" parent="." unique_id=1138932570]
+transform = Transform3D(0.175, 0, 0, 0, -7.649493e-09, 0.175, 0, -0.175, -7.649493e-09, 0.27, 0.064, 4.405)
+material_overlay = SubResource("StandardMaterial3D_dtqbe")
+texture = ExtResource("2_ei6q2")
 
 [node name="Board" type="MeshInstance3D" parent="." unique_id=26413282]
 mesh = SubResource("BoxMesh_kdcex")

@@ -9,7 +9,8 @@ class_name Note
 
 enum PlayAttempt { Early, Perfect, Late } 
 
-@export var character: Dictionary
+@export var character: Character
+@export var playing_position_index: int
 var midi_player: MidiPlayer
 var lane_index: int
 var spawned_tick: int

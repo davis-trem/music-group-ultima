@@ -1,14 +1,14 @@
 extends Node3D
 
 const FRET_BOARD = preload('res://scenes/fret_board/fret_board.tscn')
-var MIDI_SELECT_MENU = load('res://views/midi_select_menu/midi_select_menu.tscn')
+const INSTRUMENT_PROGRESS_ICON = preload("uid://bibqfw0iu5i80")
 
 @onready var midi_player: MidiPlayer = $MidiPlayer
 @onready var play_bar: Node3D = $PlayBar
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var state_label: Label = $StateLabel
 
-@export var instrument_character_selection: Dictionary[int, Dictionary]
+@export var instrument_character_selection: Dictionary[int, Character]
 @export var midi_file: String
 
 var selected_board_index := 0
@@ -22,14 +22,18 @@ func _ready() -> void:
 	for ch in midi_player.channel_status:
 		channel_volumes[ch.number] = ch.volume
 	
-	var instrument_codes: Array[int] = instrument_character_selection.keys() as Array[int]
-	GameStats.reset_ratings(instrument_codes)
-	
-	for code in instrument_codes:
+	GameStats.reset_game(instrument_character_selection)
+	for code in instrument_character_selection:
 		var board = FRET_BOARD.instantiate()
 		board.instrument_code = code
 		board.midi_player = midi_player
 		board.character = instrument_character_selection[code]
+		board.playing_position_index = boards.size()
+		
+		var instrument_progress_icon := INSTRUMENT_PROGRESS_ICON.instantiate()
+		instrument_progress_icon.instrument_code = code
+		instrument_progress_icon.playing_position_index = boards.size()
+		progress_bar.add_child(instrument_progress_icon)
 		
 		if boards.size() > 0:
 			board.position = Vector3(
@@ -100,10 +104,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action('ui_cancel'):
 		midi_player.stop()
-		var scene = MIDI_SELECT_MENU.instantiate()
-		get_tree().root.add_child(scene)
-		hide()
-		queue_free()
+		get_tree().change_scene_to_file("res://views/midi_select_menu/midi_select_menu.tscn")
 
 
 func _calc_volume_for_selected_board(volume: float) -> float:

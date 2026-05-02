@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://xwa7rmlmy5ow"]
 
 [ext_resource type="Script" uid="uid://c5hpnuannu2r" path="res://views/character_select_menu/character_select_menu.gd" id="1_2nstx"]
-[ext_resource type="Texture2D" uid="uid://dj2wthjlgp2x7" path="res://assets/radial.png" id="2_2nstx"]
 
 [node name="CharacterSelectMenu" type="Control" unique_id=598127107]
 layout_mode = 3
@@ -43,7 +42,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="CharacterNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1173436254]
+[node name="SelectedCharacterNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1173436254]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
@@ -51,17 +50,15 @@ text = "Select a Character"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=976359541]
+[node name="SelectedCharacterSprite" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=976359541]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-texture = ExtResource("2_2nstx")
 stretch_mode = 5
 
-[node name="CharacterDetailsLabel2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2142875692]
+[node name="SelectedCharacterDetailsLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2142875692]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_font_sizes/font_size = 20
-text = "Details"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1076999302]
 layout_mode = 2

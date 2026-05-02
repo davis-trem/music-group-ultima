@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bg6yegadg8j0a" path="res://scenes/game_play/game_play.gd" id="1_xuoj1"]
 [ext_resource type="PackedScene" uid="uid://cuyd1qv0pn26e" path="res://addons/midi/MidiPlayer.tscn" id="2_gti0f"]
 [ext_resource type="PackedScene" uid="uid://ojeupgtdolmu" path="res://scenes/play_bar/play_bar.tscn" id="3_quq33"]
+[ext_resource type="PackedScene" uid="uid://bibqfw0iu5i80" path="res://scenes/instrument_progress_icon/instrument_progress_icon.tscn" id="4_gti0f"]
 
 [sub_resource type="Environment" id="Environment_6it1n"]
 ambient_light_source = 3
@@ -31,6 +32,10 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 27.0
 grow_horizontal = 2
+
+[node name="InstrumentProgressIcon" parent="ProgressBar" unique_id=579829109 instance=ExtResource("4_gti0f")]
+visible = false
+layout_mode = 0
 
 [node name="StateLabel" type="Label" parent="." unique_id=883134878]
 anchors_preset = 8

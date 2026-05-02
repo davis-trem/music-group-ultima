@@ -13,7 +13,7 @@ var instruments_details: Array[Dictionary] # { instrument_code, note_count, note
 func _ready() -> void:
 	label.text = midi_name
 	for detail in instruments_details:
-		var instrument = Intruments.instruments[detail['instrument_code'] + 1]
+		var instrument = Instruments.instruments[detail['instrument_code']]
 		
 		var instrument_notes_amount := INSTRUMENT_NOTES_AMOUNT.instantiate()
 		instrument_notes_amount.instrument_type = instrument['type'];
