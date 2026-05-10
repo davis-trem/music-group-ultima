@@ -28,5 +28,5 @@ func _on_button_pressed() -> void:
 	var instrument_codes: Array[int]
 	for detail in instruments_details:
 		instrument_codes.append(detail['instrument_code'])
-	character_select_menu_scene.instrument_codes = instrument_codes.slice(1, 4) # TODO: test code
+	character_select_menu_scene.instrument_codes = instrument_codes.slice(0, 4) # TODO: test code
 	get_tree().change_scene_to_node(character_select_menu_scene)

@@ -11,7 +11,7 @@ const NOTE = preload('res://scenes/note/note.tscn')
 @export var character: Character
 @export var playing_position_index: int
 
-var notes := []
+var notes: Array[Dictionary] = []
 var spawned_noted := []
 
 var lanes := [-1.05, -0.35, 0.35, 1.05]
@@ -52,6 +52,9 @@ func _process(_delta: float) -> void:
 
 
 func process_notes() -> Array[Dictionary]:
+	if instrument_code == 999:
+		return _process_drums_notes()
+	
 	var chunk_start_index := 0
 	var min_note := 1000
 	var max_note := -1000
@@ -181,6 +184,24 @@ func map_note_to_lane(note: int, min_note: int, max_note: int):
 	# Clamp in case of edge rounding
 	lane_index = clamp(lane_index, 0, lanes.size() - 1)
 	return lane_index
+
+
+func _process_drums_notes() -> Array[Dictionary]:
+	for ec in midi_player.track_status.events:
+		if (
+			ec.channel_number == MidiPlayer.drum_track_channel
+			and ec.event.type == SMF.MIDIEventType.note_on
+		):
+			var drum_note := Instruments.drum_notes[ec.event.note]
+			notes.append({
+				'tick': ec.time,
+				'note': ec.event.note,
+				# default length to quarter note
+				'duration': midi_player.smf_data.timebase,
+				'visited': false,
+				'lane': drum_note['type']
+			})
+	return notes
 
 
 func _on_goal_area_3d_area_exited(area: Area3D) -> void:
