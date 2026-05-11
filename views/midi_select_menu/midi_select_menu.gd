@@ -35,7 +35,7 @@ func _create_row(file_name: String) -> void:
 
 func _get_instruments_details() -> Array[Dictionary]:
 	var channel_instrument: Dictionary[int, int] = {}
-	var instrument_notes: Dictionary[int, int] = {}
+	var instruments_ticks: Dictionary[int, Array] = {}
 	var highest_notes_count := 0
 	for ec in midi_player.track_status.events:
 		# TODO: Handle channels sharing the same instrument
@@ -45,15 +45,21 @@ func _get_instruments_details() -> Array[Dictionary]:
 		
 		if ec.event.type == SMF.MIDIEventType.note_on:
 			var instrument_code = channel_instrument[ec.channel_number]
-			instrument_notes[instrument_code] = instrument_notes.get(instrument_code, 0) + 1
-			highest_notes_count = max(highest_notes_count, instrument_notes[instrument_code])
+			var ticks: Array = instruments_ticks.get(instrument_code, [])
+			# note is in chord if tick and duration is 50 ticks apart
+			if ticks.size() == 0 or ticks[-1] + 50 <= ec.time:
+				ticks.append(ec.time)
+				instruments_ticks[instrument_code] = ticks
+			highest_notes_count = max(highest_notes_count, instruments_ticks[instrument_code].size())
 	
 	var list: Array[Dictionary] = []
-	for instrument_code in instrument_notes:
+	for instrument_code in instruments_ticks:
 		var entry := {
 			'instrument_code': instrument_code,
-			'note_count': instrument_notes[instrument_code],
-			'notes_percentage': float(instrument_notes[instrument_code]) / float(highest_notes_count)
+			'note_count': instruments_ticks[instrument_code].size(),
+			'notes_percentage': (
+				float(instruments_ticks[instrument_code].size()) / float(highest_notes_count)
+			)
 		}
 		list.push_back(entry)
 	return list
