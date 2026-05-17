@@ -7,6 +7,9 @@ const INSTRUMENT_PROGRESS_ICON = preload("uid://bibqfw0iu5i80")
 @onready var play_bar: Node3D = $PlayBar
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var state_label: Label = $StateLabel
+@onready var outcome_panel_container: PanelContainer = $OutcomePanelContainer
+@onready var outcome_label: Label = $OutcomePanelContainer/MarginContainer/VBoxContainer/OutcomeLabel
+@onready var break_down_label: Label = $OutcomePanelContainer/MarginContainer/VBoxContainer/BreakDownLabel
 
 @export var instrument_character_selection: Dictionary[int, Character]
 @export var midi_file: String
@@ -17,6 +20,7 @@ var game_started := false
 var channel_volumes: Dictionary[int, float] = {}
 
 func _ready() -> void:
+	GameStats.game_finished.connect(_on_game_finished)
 	midi_player.file = midi_file
 	midi_player.analyze_midi(midi_file)
 	for ch in midi_player.channel_status:
@@ -130,3 +134,26 @@ func _on_midi_player_midi_event(
 		else:
 			channel.volume = _calc_volume_for_unselected_board(channel_volumes[channel.number])
 		midi_player.update_channel_status(channel)
+
+
+func _on_midi_player_finished() -> void:
+	_on_game_finished(GameStats.crowd_favor > 50)
+
+
+func _on_game_finished(success: bool):
+	if midi_player.playing:
+		midi_player.stop()
+	outcome_label.text = 'Success!!' if success else 'Fail :('
+	var rating_breakdown := []
+	for detail in GameStats.playing_positions:
+		if detail['character'] != null:
+			rating_breakdown.append('{0}: {1}%'.format([
+				(detail['character'] as Character).name,
+				detail['rating']
+			]))
+	break_down_label.text = '\n'.join(rating_breakdown)
+	outcome_panel_container.show()
+
+
+func _on_outcome_panel_button_pressed() -> void:
+	get_tree().change_scene_to_file('res://views/midi_select_menu/midi_select_menu.tscn')

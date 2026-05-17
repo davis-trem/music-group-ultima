@@ -5,7 +5,9 @@ var characters_rating: Dictionary[Character, float] = {}
 
 var characters: Array[Character] = []
 
-var playing_positions: Array[Dictionary] = []
+var playing_positions: Array[Dictionary] = [] # { instrument_code: int, character: Character, rating: float }
+
+signal game_finished(success: bool)
 
 func _ready() -> void:
 	var demo_characters := [
@@ -43,7 +45,14 @@ func reset_game(instrument_character_selection: Dictionary[int, Character]) -> v
 		})
 
 func update_position_rating(position_index: int, change: float) -> void:
-	playing_positions[position_index]['rating'] += change
-	crowd_favor = playing_positions.reduce(
+	playing_positions[position_index]['rating'] = clampf(
+		playing_positions[position_index]['rating'] + change,
+		0.0,
+		100.0
+	)
+	var new_crowd_favor: float = playing_positions.reduce(
 		func(sum, pos): return sum + pos['rating'], 0
 	) / playing_positions.size()
+	crowd_favor = clampf(new_crowd_favor, 0.0, 100.0)
+	if crowd_favor <= 5 or crowd_favor >= 95:
+		game_finished.emit(crowd_favor >= 95)

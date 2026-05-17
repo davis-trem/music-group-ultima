@@ -52,4 +52,42 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Press [SPACE] to start"
 
+[node name="OutcomePanelContainer" type="PanelContainer" parent="." unique_id=490366923]
+visible = false
+custom_minimum_size = Vector2(400, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="OutcomePanelContainer" unique_id=976117022]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OutcomePanelContainer/MarginContainer" unique_id=1803774404]
+layout_mode = 2
+
+[node name="OutcomeLabel" type="Label" parent="OutcomePanelContainer/MarginContainer/VBoxContainer" unique_id=352018611]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Outcome"
+horizontal_alignment = 1
+
+[node name="BreakDownLabel" type="Label" parent="OutcomePanelContainer/MarginContainer/VBoxContainer" unique_id=51302042]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OutcomePanelButton" type="Button" parent="OutcomePanelContainer/MarginContainer/VBoxContainer" unique_id=301279055]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Exit"
+
+[connection signal="finished" from="MidiPlayer" to="." method="_on_midi_player_finished"]
 [connection signal="midi_event" from="MidiPlayer" to="." method="_on_midi_player_midi_event"]
+[connection signal="pressed" from="OutcomePanelContainer/MarginContainer/VBoxContainer/OutcomePanelButton" to="." method="_on_outcome_panel_button_pressed"]
