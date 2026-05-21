@@ -2,10 +2,12 @@ extends Node
 
 var crowd_favor: float = 50.0
 var characters_rating: Dictionary[Character, float] = {}
+var min_note_count: int = 999999
 
 var characters: Array[Character] = []
 
-var playing_positions: Array[Dictionary] = [] # { instrument_code: int, character: Character, rating: float }
+# { instrument_code: int, character: Character, note_count: int, rating: float }[]
+var playing_positions: Array[Dictionary] = [] 
 
 signal game_finished(success: bool)
 
@@ -35,18 +37,24 @@ func _ready() -> void:
 		)
 		characters.append(character)
 
-func reset_game(instrument_character_selection: Dictionary[int, Character]) -> void:
+func reset_game(playing_positions_details: Array[Dictionary]) -> void:
 	crowd_favor = 50.0
-	for code in instrument_character_selection:
+	min_note_count = 999999
+	for detail in playing_positions_details:
+		min_note_count = min(min_note_count, detail['note_count'])
 		playing_positions.append({
-			'instrument_code': code,
-			'character': instrument_character_selection[code],
+			'instrument_code': detail['instrument_code'],
+			'character': detail['character'],
+			'note_count': detail['note_count'],
 			'rating': 50.0
 		})
 
 func update_position_rating(position_index: int, change: float) -> void:
+	var adjusted_change := change * (
+		float(min_note_count) / float(playing_positions[position_index]['note_count'])
+	)
 	playing_positions[position_index]['rating'] = clampf(
-		playing_positions[position_index]['rating'] + change,
+		playing_positions[position_index]['rating'] + adjusted_change,
 		0.0,
 		100.0
 	)

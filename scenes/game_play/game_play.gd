@@ -26,7 +26,7 @@ func _ready() -> void:
 	for ch in midi_player.channel_status:
 		channel_volumes[ch.number] = ch.volume
 	
-	GameStats.reset_game(instrument_character_selection)
+	var playing_positions_details: Array[Dictionary] = []
 	for code in instrument_character_selection:
 		var board = FRET_BOARD.instantiate()
 		board.instrument_code = code
@@ -46,9 +46,16 @@ func _ready() -> void:
 				-1
 			)
 		boards.push_back(board)
-		board.process_notes()
+		var notes = board.process_notes()
 		add_child(board)
+		
+		playing_positions_details.append({
+			'instrument_code': code,
+			'character': instrument_character_selection[code],
+			'note_count': notes.size(),
+		})
 	
+	GameStats.reset_game(playing_positions_details)
 	_update_play_bar_status()
 
 
