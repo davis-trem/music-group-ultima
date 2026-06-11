@@ -208,8 +208,7 @@ func _on_goal_area_3d_area_exited(area: Area3D) -> void:
 	var parent = area.get_parent_node_3d()
 	if is_instance_of(parent, Note) and not parent.note_played:
 		(parent as Note).set_color(Color.DARK_RED)
-		GameStats.update_position_rating(playing_position_index, -1)
-		#print('FAIL', (parent as Note).lane_index)
+		GameStats.update_position_rating(playing_position_index, Note.PlayAttempt.Missed)
 
 
 func _on_exit_area_3d_area_exited(area: Area3D) -> void:

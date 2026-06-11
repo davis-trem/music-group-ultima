@@ -7,7 +7,7 @@ class_name Note
 @onready var gpu_particles_3d: GPUParticles3D = $GPUParticles3D
 @onready var play_attempt_label_3d: Label3D = $PlayAttemptLabel3D
 
-enum PlayAttempt { Early, Perfect, Late } 
+enum PlayAttempt { Early, Perfect, Late, Missed } 
 
 @export var character: Character
 @export var playing_position_index: int

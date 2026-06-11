@@ -3,6 +3,7 @@ extends Node
 var crowd_favor: float = 50.0
 var characters_rating: Dictionary[Character, float] = {}
 var min_note_count: int = 999999
+var value_change_rate: float = 1.0
 
 var characters: Array[Character] = []
 
@@ -40,6 +41,7 @@ func _ready() -> void:
 func reset_game(playing_positions_details: Array[Dictionary]) -> void:
 	crowd_favor = 50.0
 	min_note_count = 999999
+	playing_positions = []
 	for detail in playing_positions_details:
 		min_note_count = min(min_note_count, detail['note_count'])
 		playing_positions.append({
@@ -48,9 +50,21 @@ func reset_game(playing_positions_details: Array[Dictionary]) -> void:
 			'note_count': detail['note_count'],
 			'rating': 50.0
 		})
+	value_change_rate = 100.0 / float(min_note_count)
 
-func update_position_rating(position_index: int, change: float) -> void:
-	var adjusted_change := change * (
+func update_position_rating(position_index: int, play_attempt: Note.PlayAttempt) -> void:
+	var play_attempt_change := 1.0
+	match play_attempt:
+		Note.PlayAttempt.Early, Note.PlayAttempt.Late:
+			play_attempt_change = 0.7
+		Note.PlayAttempt.Perfect:
+			play_attempt_change = 1.0
+		Note.PlayAttempt.Missed, _:
+			play_attempt_change = (
+				-0.5 if playing_positions[position_index]['character'] == null
+				else -1.0
+			)
+	var adjusted_change := play_attempt_change * value_change_rate * (
 		float(min_note_count) / float(playing_positions[position_index]['note_count'])
 	)
 	playing_positions[position_index]['rating'] = clampf(

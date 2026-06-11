@@ -37,18 +37,18 @@ func _input(event: InputEvent) -> void:
 		# Played note
 		if note_in_range and not note_in_range.note_played:
 			var dist_from_goal := global_position.z - note_in_range.global_position.z
-			var points := 1.0
 			if dist_from_goal > 0.2:
 				note_in_range.play_attempt = Note.PlayAttempt.Early
-				points = 0.7
 			elif dist_from_goal < -0.2:
 				note_in_range.play_attempt = Note.PlayAttempt.Late
-				points = 0.7
 			else:
 				note_in_range.play_attempt = Note.PlayAttempt.Perfect
 			
 			note_in_range.note_played = true
-			GameStats.update_position_rating(note_in_range.playing_position_index, points)
+			GameStats.update_position_rating(
+				note_in_range.playing_position_index,
+				note_in_range.play_attempt,
+			)
 		else:
 			tween.tween_property(
 				material,
@@ -75,7 +75,7 @@ func _input(event: InputEvent) -> void:
 			if note_in_range:
 				GameStats.update_position_rating(
 					note_in_range.playing_position_index,
-					-0.1 if note_in_range.character == null else -1.0
+					Note.PlayAttempt.Missed,
 				)
 
 
