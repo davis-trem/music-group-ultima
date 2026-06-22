@@ -8,9 +8,12 @@ var value_change_rate: float = 1.0
 var characters: Array[Character] = []
 
 # { instrument_code: int, character: Character, note_count: int, rating: float }[]
-var playing_positions: Array[Dictionary] = [] 
+var playing_positions: Array[Dictionary] = []
+
+const power_bar_cost := 25.0
 
 signal game_finished(success: bool)
+signal rating_updated(position_index: int, rating: float, power_value: float)
 
 func _ready() -> void:
 	var demo_characters := [
@@ -48,7 +51,8 @@ func reset_game(playing_positions_details: Array[Dictionary]) -> void:
 			'instrument_code': detail['instrument_code'],
 			'character': detail['character'],
 			'note_count': detail['note_count'],
-			'rating': 50.0
+			'rating': 50.0,
+			'power_value': 0.0
 		})
 	value_change_rate = 100.0 / float(min_note_count)
 
@@ -72,9 +76,37 @@ func update_position_rating(position_index: int, play_attempt: Note.PlayAttempt)
 		0.0,
 		100.0
 	)
+	
+	if adjusted_change > 0:
+		playing_positions[position_index]['power_value'] = clampf(
+			playing_positions[position_index]['power_value'] + adjusted_change,
+			0.0,
+			50.0
+		)
+	
 	var new_crowd_favor: float = playing_positions.reduce(
 		func(sum, pos): return sum + pos['rating'], 0
 	) / playing_positions.size()
 	crowd_favor = clampf(new_crowd_favor, 0.0, 100.0)
+	
+	rating_updated.emit(
+		position_index,
+		playing_positions[position_index]['rating'],
+		playing_positions[position_index]['power_value']
+	)
+	
 	if crowd_favor <= 5 or crowd_favor >= 95:
 		game_finished.emit(crowd_favor >= 95)
+
+
+func activate_power_move(position_index: int):
+	playing_positions[position_index]['power_value'] = clamp(
+			playing_positions[position_index]['power_value'] - power_bar_cost,
+			0.0,
+			50.0
+		)
+	rating_updated.emit(
+		position_index,
+		playing_positions[position_index]['rating'],
+		playing_positions[position_index]['power_value']
+	)

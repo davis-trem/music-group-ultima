@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cnba5j4t3nqb6"]
 
 [ext_resource type="Script" uid="uid://1g0gcodui04p" path="res://scenes/fret_board/fret_board.gd" id="1_hod3d"]
+[ext_resource type="PackedScene" uid="uid://c0p2tqj1xh5by" path="res://scenes/progress_bar_3d/progress_bar_3d.tscn" id="2_dtqbe"]
 [ext_resource type="Texture2D" uid="uid://c12eoscx83526" path="res://sprites/no_sign.png" id="2_ei6q2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ei6q2"]
@@ -36,6 +37,16 @@ size = Vector3(2.9, 0.5, 0.1)
 
 [node name="FretBoard" type="Node3D" unique_id=71083094]
 script = ExtResource("1_hod3d")
+
+[node name="PowerBar1" parent="." unique_id=823109153 instance=ExtResource("2_dtqbe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0.115, 4.736)
+max_value = 25.0
+
+[node name="PowerBar2" parent="." unique_id=36706979 instance=ExtResource("2_dtqbe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 0.115, 4.736)
+min_value = 25.0
+max_value = 50.0
+value = 25.0
 
 [node name="InstrumentIcon" type="Sprite3D" parent="." unique_id=1034234632]
 transform = Transform3D(0.1, 0, 0, 0, -4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, -0.27, 0.064, 4.405)

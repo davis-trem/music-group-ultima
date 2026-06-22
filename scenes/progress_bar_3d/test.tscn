@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://d2gj3h4qr7bwt"]
+
+[ext_resource type="PackedScene" uid="uid://c0p2tqj1xh5by" path="res://scenes/progress_bar_3d/progress_bar_3d.tscn" id="1_k01vi"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_k01vi"]
+
+[sub_resource type="Sky" id="Sky_k01vi"]
+sky_material = SubResource("ProceduralSkyMaterial_k01vi")
+
+[sub_resource type="Environment" id="Environment_k01vi"]
+background_mode = 2
+sky = SubResource("Sky_k01vi")
+ambient_light_source = 3
+ambient_light_color = Color(0.68107575, 0.6810758, 0.68107563, 1)
+
+[node name="Node3D" type="Node3D" unique_id=1360394422]
+
+[node name="ProgressBar3D" parent="." unique_id=823109153 instance=ExtResource("1_k01vi")]
+min_value = 25.0
+max_value = 50.0
+value = 35.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=143830211]
+transform = Transform3D(0.9994306, 0.015387369, 0.030029438, -0.02611931, 0.91622466, 0.39981264, -0.021361649, -0.40036935, 0.91610485, 0.14118353, 0.5864284, 1.2366321)
+environment = SubResource("Environment_k01vi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=664416420]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 4.185, 0)

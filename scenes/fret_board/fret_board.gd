@@ -5,6 +5,9 @@ const NOTE = preload('res://scenes/note/note.tscn')
 @onready var goal_area_3d: Area3D = $GoalArea3D
 @onready var instrument_icon: Sprite3D = $InstrumentIcon
 @onready var character_icon: Sprite3D = $CharacterIcon
+@onready var power_bar_1: ProgressBar3D = $PowerBar1
+@onready var power_bar_2: ProgressBar3D = $PowerBar2
+
 
 @export var midi_player: MidiPlayer
 @export var instrument_code: int
@@ -21,6 +24,8 @@ var board_is_disabled := false
 
 
 func _ready() -> void:
+	GameStats.rating_updated.connect(_on_rating_updated)
+
 	var instrument_type = Instruments.instruments[instrument_code]['type']
 	var icon := load(Instruments.instrument_icons[instrument_type])
 	instrument_icon.texture = icon
@@ -30,6 +35,12 @@ func _ready() -> void:
 		var c_icon := load(character.sprite)
 		character_icon.texture = c_icon
 		character_icon.modulate = character.modulate_color
+
+
+func _on_rating_updated(position_index: int, _rating: float, power_value: float) -> void:
+	if position_index == playing_position_index:
+		power_bar_1.value = power_value
+		power_bar_2.value = power_value
 
 
 func _process(_delta: float) -> void:

@@ -116,6 +116,16 @@ func _input(event: InputEvent) -> void:
 	if event.is_action('ui_cancel'):
 		midi_player.stop()
 		get_tree().change_scene_to_file("res://views/midi_select_menu/midi_select_menu.tscn")
+	
+	if (
+		event.is_action_pressed('activate_power_move') and
+		GameStats.playing_positions[selected_board_index]['power_value'] >= 0 and
+		(
+			GameStats.playing_positions[selected_board_index]['power_value'] /
+			GameStats.power_bar_cost
+		) >= 1.0
+	):
+		GameStats.activate_power_move(selected_board_index)
 
 
 func _calc_volume_for_selected_board(volume: float) -> float:
