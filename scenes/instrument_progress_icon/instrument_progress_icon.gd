@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	_move_by_percentage(GameStats.playing_positions[playing_position_index]['rating'] / 100)
+	_move_by_percentage(GameStats.playing_positions[playing_position_index].rating / 100)
 
 
 func _move_by_percentage(value: float) -> void:

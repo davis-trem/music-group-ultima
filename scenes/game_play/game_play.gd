@@ -119,9 +119,9 @@ func _input(event: InputEvent) -> void:
 	
 	if (
 		event.is_action_pressed('activate_power_move') and
-		GameStats.playing_positions[selected_board_index]['power_value'] >= 0 and
+		GameStats.playing_positions[selected_board_index].power_value >= 0 and
 		(
-			GameStats.playing_positions[selected_board_index]['power_value'] /
+			GameStats.playing_positions[selected_board_index].power_value /
 			GameStats.power_bar_cost
 		) >= 1.0
 	):

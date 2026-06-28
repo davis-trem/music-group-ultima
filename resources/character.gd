@@ -5,6 +5,7 @@ extends Resource
 @export var instrument_code: int
 @export var instrument_name: String
 @export var instrument_type: Instruments.INSTRUMENT_TYPE
+@export var power_move: PowerMoves.PowerMoveKey
 @export var sprite: String
 @export var modulate_color: Color
 
@@ -17,5 +18,6 @@ func _init(n: String, instr_code: int) -> void:
 	var instrument: Dictionary = Instruments.instruments[instr_code]
 	instrument_type = instrument['type']
 	instrument_name = instrument['name']
+	power_move = PowerMoves.PowerMoveKey.values().pick_random()
 	sprite = placeholder_sprite
 	modulate_color = Color(randf(), randf(), randf())
