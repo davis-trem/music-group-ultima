@@ -46,9 +46,14 @@ func _on_rating_updated(position_index: int, _rating: float, power_value: float)
 func _process(_delta: float) -> void:
 	if midi_player.playing:
 		for note in notes:
-			if not note['visited'] and midi_player.position + (midi_player.smf_data.timebase * 5) >= note['tick']:
-				note['visited'] = true
+			if (
+				not note.get('spawned_note')
+				# note is 5 beats away from position
+				and midi_player.position + (midi_player.smf_data.timebase * 5) >= note['tick']
+				and midi_player.position < note['tick']
+			):
 				var n = NOTE.instantiate()
+				note['spawned_note'] = n
 				n.character = character
 				n.midi_player = midi_player
 				n.playing_position_index = playing_position_index
@@ -81,7 +86,6 @@ func process_notes() -> Array[Dictionary]:
 				'note': ec.event.note,
 				# default length to quarter note
 				'duration': midi_player.smf_data.timebase,
-				'visited': false,
 			})
 			notes_on[ec.event.note] = temp_notes.size() - 1
 			if min_note == 1000 and max_note == -1000:
@@ -209,7 +213,6 @@ func _process_drums_notes() -> Array[Dictionary]:
 				'note': ec.event.note,
 				# default length to quarter note
 				'duration': midi_player.smf_data.timebase,
-				'visited': false,
 				'lane': drum_note['type']
 			})
 	return notes
@@ -217,7 +220,11 @@ func _process_drums_notes() -> Array[Dictionary]:
 
 func _on_goal_area_3d_area_exited(area: Area3D) -> void:
 	var parent = area.get_parent_node_3d()
-	if is_instance_of(parent, Note) and not parent.note_played:
+	if (
+		is_instance_of(parent, Note)
+		and not parent.note_played
+		and parent.position.z > goal_area_3d.position.z
+	):
 		(parent as Note).set_color(Color.DARK_RED)
 		GameStats.update_position_rating(playing_position_index, Note.PlayAttempt.Missed)
 

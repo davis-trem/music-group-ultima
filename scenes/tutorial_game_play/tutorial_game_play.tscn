@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bunh5km1jlntf"]
+
+[ext_resource type="PackedScene" uid="uid://cx4limbrle82y" path="res://scenes/game_play/game_play.tscn" id="1_7tenh"]
+[ext_resource type="Script" uid="uid://dqd5atevnppf7" path="res://scenes/tutorial_game_play/tutorial_game_play.gd" id="2_qoem2"]
+[ext_resource type="Script" uid="uid://qc60v026udbb" path="res://resources/character.gd" id="3_ixjns"]
+
+[sub_resource type="Resource" id="Resource_miwl0"]
+script = ExtResource("3_ixjns")
+name = "Guitar Man"
+instrument_code = 25
+metadata/_custom_type_script = "uid://qc60v026udbb"
+
+[sub_resource type="Resource" id="Resource_ixjns"]
+script = ExtResource("3_ixjns")
+name = "Drummer Kid"
+instrument_code = 999
+metadata/_custom_type_script = "uid://qc60v026udbb"
+
+[node name="TutorialGamePlay" unique_id=1942644047 instance=ExtResource("1_7tenh")]
+script = ExtResource("2_qoem2")
+instrument_character_selection = Dictionary[int, ExtResource("3_ixjns")]({
+25: SubResource("Resource_miwl0"),
+999: SubResource("Resource_ixjns")
+})
+midi_file = "res://midis/tutorial.mid"
