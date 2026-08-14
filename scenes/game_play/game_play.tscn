@@ -13,6 +13,12 @@ fog_light_color = Color(0.214139, 0.235722, 0.269651, 1)
 fog_sun_scatter = 0.35
 fog_density = 0.985
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_gti0f"]
+radius = 45.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_quq33"]
+radius = 45.0
+
 [node name="GamePlay" type="Node3D" unique_id=1942644047]
 script = ExtResource("1_xuoj1")
 
@@ -87,6 +93,43 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_vertical = 8
 text = "Exit"
+
+[node name="Control" type="Control" parent="." unique_id=31794551]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control" unique_id=282030468]
+position = Vector2(60, -150)
+shape = SubResource("CircleShape2D_gti0f")
+action = "fret_button_1"
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="Control" unique_id=911299720]
+position = Vector2(160, -60)
+shape = SubResource("CircleShape2D_quq33")
+action = "fret_button_2"
+
+[node name="Control2" type="Control" parent="." unique_id=28914400]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="Control2" unique_id=858424179]
+position = Vector2(-160, -60)
+shape = SubResource("CircleShape2D_quq33")
+action = "fret_button_3"
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control2" unique_id=2109369927]
+position = Vector2(-60, -150)
+shape = SubResource("CircleShape2D_gti0f")
+action = "fret_button_4"
 
 [connection signal="finished" from="MidiPlayer" to="." method="_on_midi_player_finished"]
 [connection signal="midi_event" from="MidiPlayer" to="." method="_on_midi_player_midi_event"]
