@@ -14,10 +14,14 @@ const INSTRUMENT_PROGRESS_ICON = preload("uid://bibqfw0iu5i80")
 @export var instrument_character_selection: Dictionary[int, Character]
 @export var midi_file: String
 
+enum ShiftDirection { LEFT, RIGHT }
+const MIN_SWIPE_DIST := 100.0
+
 var selected_board_index := 0
 var boards := []
 var game_started := false
 var channel_volumes: Dictionary[int, float] = {}
+var starting_swipe_position: Vector2
 
 func _ready() -> void:
 	GameStats.game_finished.connect(_on_game_finished)
@@ -69,35 +73,22 @@ func _update_play_bar_status() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if (
-		(event.is_action_pressed('shift_fret_board_left') and selected_board_index > 0) or
-		(event.is_action_pressed('shift_fret_board_right') and selected_board_index < boards.size() - 1)
-	):
-		selected_board_index += -1 if event.is_action_pressed('shift_fret_board_left') else 1
-		var tween := create_tween()
-		tween.set_parallel()
-		for i in range(boards.size()):
-			tween.tween_property(
-				boards[i],
-				'position',
-				Vector3(
-					(i - selected_board_index) * 4.2,
-					0 if selected_board_index == i else -3,
-					0 if selected_board_index == i else -1,
-				),
-				0.2
-			)
-		#tween.tween_callback(tween.queue_free)
-		tween.play()
-		
-		_update_play_bar_status()
-		
-		for ch in midi_player.channel_status:
-			if ch.number == boards[selected_board_index].channel_number:
-				ch.volume = _calc_volume_for_selected_board(channel_volumes[ch.number])
-			else:
-				ch.volume = _calc_volume_for_unselected_board(channel_volumes[ch.number])
-			midi_player.update_channel_status(ch)
+	if event is InputEventScreenTouch:
+		if event.is_pressed():
+			starting_swipe_position = event.position
+		else:
+			var delta: Vector2 = event.position - starting_swipe_position
+			if abs(delta.x) >= MIN_SWIPE_DIST:
+				if delta.x > 0:
+					_handle_shift_fret_board(ShiftDirection.LEFT)
+				else:
+					_handle_shift_fret_board(ShiftDirection.RIGHT)
+	
+	if event.is_action_pressed('shift_fret_board_left'):
+		_handle_shift_fret_board(ShiftDirection.LEFT)
+	
+	if event.is_action_pressed('shift_fret_board_right'):
+		_handle_shift_fret_board(ShiftDirection.RIGHT)
 	
 	if event.is_action_pressed('toggle_play'):
 		if not midi_player.playing:
@@ -126,6 +117,38 @@ func _input(event: InputEvent) -> void:
 		) >= 1.0
 	):
 		GameStats.activate_power_move(selected_board_index)
+
+
+func _handle_shift_fret_board(direction: ShiftDirection):
+	if (
+		(direction == ShiftDirection.LEFT and selected_board_index > 0) or
+		(direction == ShiftDirection.RIGHT and selected_board_index < boards.size() - 1)
+	):
+		selected_board_index += -1 if direction == ShiftDirection.LEFT else 1
+		var tween := create_tween()
+		tween.set_parallel()
+		for i in range(boards.size()):
+			tween.tween_property(
+				boards[i],
+				'position',
+				Vector3(
+					(i - selected_board_index) * 4.2,
+					0 if selected_board_index == i else -3,
+					0 if selected_board_index == i else -1,
+				),
+				0.2
+			)
+		#tween.tween_callback(tween.queue_free)
+		tween.play()
+		
+		_update_play_bar_status()
+		
+		for ch in midi_player.channel_status:
+			if ch.number == boards[selected_board_index].channel_number:
+				ch.volume = _calc_volume_for_selected_board(channel_volumes[ch.number])
+			else:
+				ch.volume = _calc_volume_for_unselected_board(channel_volumes[ch.number])
+			midi_player.update_channel_status(ch)
 
 
 func _calc_volume_for_selected_board(volume: float) -> float:
